@@ -40,6 +40,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.raywenderlich.android.librarian.App
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.relations.BookAndGenre
@@ -57,6 +58,7 @@ class BooksFragment : Fragment() {
   private val binding get() = _binding!!
   private val adapter by lazy { BookAdapter(::onItemLongTapped) }
   private var filter: Filter? = null
+  private val repository by lazy { App.repository }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -104,7 +106,7 @@ class BooksFragment : Fragment() {
   private fun loadBooks() {
     binding.pullToRefresh.isRefreshing = true
 
-    val books = emptyList<BookAndGenre>() // TODO fetch from DB
+    val books = repository.getBooks()
 
     adapter.setData(books)
     binding.pullToRefresh.isRefreshing = false

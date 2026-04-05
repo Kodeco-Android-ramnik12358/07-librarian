@@ -40,53 +40,55 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.App
+import com.raywenderlich.android.librarian.databinding.ActivityAddBookBinding
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.Genre
 import com.raywenderlich.android.librarian.utils.toast
-import com.raywenderlich.android.librarian.databinding.ActivityAddBookBinding
 
 class AddBookActivity : AppCompatActivity() {
 
-  private lateinit var binding: ActivityAddBookBinding
+    private lateinit var binding: ActivityAddBookBinding
 
-  companion object {
-    fun getIntent(context: Context): Intent = Intent(context, AddBookActivity::class.java)
-  }
+    private val repository by lazy { App.repository }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = ActivityAddBookBinding.inflate(layoutInflater)
-    setContentView(binding.root)
-    initUi()
-  }
-
-  private fun initUi() {
-    binding.addBook.setOnClickListener { createBook() }
-
-    binding.genrePicker.adapter = ArrayAdapter(
-        this@AddBookActivity,
-        android.R.layout.simple_spinner_dropdown_item,
-        listOf<Genre>().map { it.name }
-    )
-  }
-
-  // TODO implement database call!
-  private fun createBook() {
-    val title = binding.bookTitle.text.toString()
-    val description = binding.bookDescription.text.toString()
-    val genreId = ""
-
-    if (title.isNotBlank() && description.isNotBlank() && !genreId.isNullOrBlank()) {
-      val book = Book(
-          name = title,
-          description = description,
-          genreId = genreId
-      )
-
-      toast("Book added! :]")
-      setResult(Activity.RESULT_OK)
-      finish()
+    companion object {
+        fun getIntent(context: Context): Intent = Intent(context, AddBookActivity::class.java)
     }
-  }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAddBookBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initUi()
+    }
+
+    private fun initUi() {
+        binding.addBook.setOnClickListener { createBook() }
+
+        binding.genrePicker.adapter = ArrayAdapter(
+            this@AddBookActivity,
+            android.R.layout.simple_spinner_dropdown_item,
+            repository.getGenres().map { it.name }
+        )
+    }
+
+    private fun createBook() {
+        val title = binding.bookTitle.text.toString()
+        val description = binding.bookDescription.text.toString()
+        val genreId = repository.getGenres().firstOrNull { it.name == binding.genrePicker.selectedItem }?.id
+
+        if (title.isNotBlank() && description.isNotBlank() && !genreId.isNullOrBlank()) {
+            val book = Book(
+                name = title,
+                description = description,
+                genreId = genreId
+            )
+
+            repository.addBook(book)
+            toast("Book added! :]")
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+    }
 }
