@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.raywenderlich.android.librarian.database.dao.BookDao
+import com.raywenderlich.android.librarian.database.dao.GenreDao
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.Genre
 
@@ -24,4 +26,8 @@ abstract class LibrarianDatabase : RoomDatabase() {
                 .build()
         }
     }
+
+    abstract fun bookDao(): BookDao
+    abstract fun genreDao(): GenreDao
+
 }
