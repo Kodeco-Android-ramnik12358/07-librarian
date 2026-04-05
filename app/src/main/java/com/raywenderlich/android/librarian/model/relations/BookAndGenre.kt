@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.model.relations
 import android.os.Parcelable
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.Genre
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class BookAndGenre(

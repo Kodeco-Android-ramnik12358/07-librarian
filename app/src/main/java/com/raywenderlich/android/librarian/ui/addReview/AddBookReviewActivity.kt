@@ -42,10 +42,12 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.Review
-import kotlinx.android.synthetic.main.activity_add_book_review.*
+import com.raywenderlich.android.librarian.databinding.ActivityAddBookReviewBinding
 import java.util.*
 
 class AddBookReviewActivity : AppCompatActivity() {
+
+  private lateinit var binding: ActivityAddBookReviewBinding
 
   companion object {
     fun getIntent(context: Context) = Intent(context, AddBookReviewActivity::class.java)
@@ -53,27 +55,28 @@ class AddBookReviewActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_add_book_review)
+    binding = ActivityAddBookReviewBinding.inflate(layoutInflater)
+    setContentView(binding.root)
     initUi()
   }
 
   private fun initUi() {
-    bookOption.adapter = ArrayAdapter(
+    binding.bookOption.adapter = ArrayAdapter(
         this@AddBookReviewActivity,
         android.R.layout.simple_spinner_dropdown_item,
         listOf<String>()
     )
 
-    addReview.setOnClickListener { addBookReview() }
+    binding.addReview.setOnClickListener { addBookReview() }
   }
 
   // TODO save a book
   private fun addBookReview() {
-    val rating = reviewRating.rating.toInt()
+    val rating = binding.reviewRating.rating.toInt()
     val bookId = ""
 
-    val imageUrl = bookImageUrl.text.toString()
-    val notes = reviewNotes.text.toString()
+    val imageUrl = binding.bookImageUrl.text.toString()
+    val notes = binding.reviewNotes.text.toString()
 
     if (bookId != null && imageUrl.isNotBlank() && notes.isNotBlank()) {
       val bookReview = Review(

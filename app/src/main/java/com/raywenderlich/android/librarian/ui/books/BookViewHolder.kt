@@ -38,18 +38,18 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.relations.BookAndGenre
-import kotlinx.android.synthetic.main.item_book.view.*
+import com.raywenderlich.android.librarian.databinding.ItemBookBinding
 
-class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class BookViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
 
   fun showData(bookAndGenre: BookAndGenre,
-      onItemLongTap: (Book) -> Unit) = with(itemView) {
+      onItemLongTap: (Book) -> Unit) {
     val (book, genre) = bookAndGenre
-    bookTitle.text = book.name
-    bookGenre.text = genre.name
-    bookDescription.text = book.description
+    binding.bookTitle.text = book.name
+    binding.bookGenre.text = genre.name
+    binding.bookDescription.text = book.description
 
-    setOnLongClickListener {
+    binding.root.setOnLongClickListener {
       onItemLongTap(book)
       true
     }

@@ -41,16 +41,25 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.DialogAddReadingEntryBinding
 import com.raywenderlich.android.librarian.model.ReadingEntry
-import kotlinx.android.synthetic.main.dialog_add_reading_entry.*
 import java.util.*
 
 class AddReadingEntryDialogFragment(private val onReadingEntryAdded: (ReadingEntry) -> Unit)
   : DialogFragment() {
 
+  private var _binding: DialogAddReadingEntryBinding? = null
+  private val binding get() = _binding!!
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.dialog_add_reading_entry, container, false)
+    _binding = DialogAddReadingEntryBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,11 +68,11 @@ class AddReadingEntryDialogFragment(private val onReadingEntryAdded: (ReadingEnt
   }
 
   private fun initUi() {
-    addReadingEntry.setOnClickListener { addEntry() }
+    binding.addReadingEntry.setOnClickListener { addEntry() }
   }
 
   private fun addEntry() {
-    val input = readingEntryInput.text.toString()
+    val input = binding.readingEntryInput.text.toString()
 
     if (input.isNotBlank()) {
       onReadingEntryAdded(ReadingEntry(

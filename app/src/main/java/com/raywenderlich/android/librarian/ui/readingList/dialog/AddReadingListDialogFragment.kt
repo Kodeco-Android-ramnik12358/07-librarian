@@ -42,20 +42,28 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.ReadingList
-import kotlinx.android.synthetic.main.dialog_add_reading_list.*
+import com.raywenderlich.android.librarian.databinding.DialogAddReadingListBinding
 
 class AddReadingListDialogFragment(private val onListAdded: () -> Unit) : DialogFragment() {
 
+  private var _binding: DialogAddReadingListBinding? = null
+  private val binding get() = _binding!!
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.dialog_add_reading_list, container, false)
+    _binding = DialogAddReadingListBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    addReadingList.setOnClickListener { createReadingList() }
+    binding.addReadingList.setOnClickListener { createReadingList() }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +78,7 @@ class AddReadingListDialogFragment(private val onListAdded: () -> Unit) : Dialog
   }
 
   private fun createReadingList() {
-    val readingListName = readingListNameInput.text.toString()
+    val readingListName = binding.readingListNameInput.text.toString()
 
     if (readingListName.isNotBlank()) {
       val readingList = ReadingList(name = readingListName, bookIds = emptyList())

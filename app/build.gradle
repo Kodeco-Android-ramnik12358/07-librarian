@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -20,13 +20,22 @@ android {
   buildTypes {
     release {
       minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
   compileOptions {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
   }
+
+  kotlinOptions {
+    jvmTarget = '11'
+  }
+    namespace 'com.raywenderlich.android.librarian'
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

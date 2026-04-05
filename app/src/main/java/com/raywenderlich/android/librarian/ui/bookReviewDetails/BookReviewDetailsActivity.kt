@@ -49,11 +49,12 @@ import com.raywenderlich.android.librarian.ui.bookReviewDetails.readingEntries.R
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
 import com.raywenderlich.android.librarian.utils.formatDateToText
 import com.raywenderlich.android.librarian.utils.toast
-import kotlinx.android.synthetic.main.activity_book_review_details.*
+import com.raywenderlich.android.librarian.databinding.ActivityBookReviewDetailsBinding
 import java.util.*
 
 class BookReviewDetailsActivity : AppCompatActivity() {
 
+  private lateinit var binding: ActivityBookReviewDetailsBinding
   private var bookReview: BookReview? = null
   private val adapter by lazy { ReadingEntryAdapter(::onItemLongTapped) }
 
@@ -70,14 +71,15 @@ class BookReviewDetailsActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_book_review_details)
+    binding = ActivityBookReviewDetailsBinding.inflate(layoutInflater)
+    setContentView(binding.root)
     initUi()
   }
 
   private fun initUi() {
-    readingEntriesRecyclerView.layoutManager = LinearLayoutManager(this)
-    readingEntriesRecyclerView.adapter = adapter
-    addReadingEntry.setOnClickListener {
+    binding.readingEntriesRecyclerView.layoutManager = LinearLayoutManager(this)
+    binding.readingEntriesRecyclerView.adapter = adapter
+    binding.addReadingEntry.setOnClickListener {
       val dialog = AddReadingEntryDialogFragment { readingEntry ->
         addNewEntry(readingEntry)
       }
@@ -100,12 +102,12 @@ class BookReviewDetailsActivity : AppCompatActivity() {
     val data = bookReview ?: return
     val genre = Genre(data.book.genreId, "")
 
-    Glide.with(this).load(data.review.imageUrl).into(bookImage)
-    reviewTitle.text = data.book.name
-    reviewRating.rating = data.review.rating.toFloat()
-    reviewDescription.text = data.review.notes
-    lastUpdated.text = formatDateToText(data.review.lastUpdatedDate)
-    bookGenre.text = genre.name
+    Glide.with(this).load(data.review.imageUrl).into(binding.bookImage)
+    binding.reviewTitle.text = data.book.name
+    binding.reviewRating.rating = data.review.rating.toFloat()
+    binding.reviewDescription.text = data.review.notes
+    binding.lastUpdated.text = formatDateToText(data.review.lastUpdatedDate)
+    binding.bookGenre.text = genre.name
 
     adapter.setData(data.review.entries)
   }

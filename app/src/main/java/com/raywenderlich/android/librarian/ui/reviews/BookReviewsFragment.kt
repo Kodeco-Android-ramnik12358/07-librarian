@@ -41,11 +41,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.FragmentReviewsBinding
 import com.raywenderlich.android.librarian.model.relations.BookReview
 import com.raywenderlich.android.librarian.ui.addReview.AddBookReviewActivity
 import com.raywenderlich.android.librarian.ui.bookReviewDetails.BookReviewDetailsActivity
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
-import kotlinx.android.synthetic.main.fragment_reviews.*
 
 /**
  * Fetches and displays notes from the API.
@@ -54,11 +54,14 @@ private const val REQUEST_CODE_ADD_REVIEW = 102
 
 class BookReviewsFragment : Fragment() {
 
+  private var _binding: FragmentReviewsBinding? = null
+  private val binding get() = _binding!!
   private val adapter by lazy { BookReviewAdapter(::onItemSelected, ::onItemLongTapped) }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.fragment_reviews, container, false)
+    _binding = FragmentReviewsBinding.inflate(inflater, container, false)
+    return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,15 +71,20 @@ class BookReviewsFragment : Fragment() {
     loadBookReviews()
   }
 
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
+
   private fun initUi() {
-    reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
-    reviewsRecyclerView.adapter = adapter
+    binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
+    binding.reviewsRecyclerView.adapter = adapter
   }
 
   private fun initListeners() {
-    pullToRefresh.isEnabled = false
+    binding.pullToRefresh.isEnabled = false
 
-    addBookReview.setOnClickListener {
+    binding.addBookReview.setOnClickListener {
       startActivityForResult(
           AddBookReviewActivity.getIntent(requireContext()), REQUEST_CODE_ADD_REVIEW
       )

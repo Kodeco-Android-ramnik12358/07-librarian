@@ -38,16 +38,16 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.android.librarian.model.ReadingEntry
 import com.raywenderlich.android.librarian.utils.formatDateToText
-import kotlinx.android.synthetic.main.item_reading_entry.view.*
+import com.raywenderlich.android.librarian.databinding.ItemReadingEntryBinding
 
-class ReadingEntryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ReadingEntryViewHolder(private val binding: ItemReadingEntryBinding) : RecyclerView.ViewHolder(binding.root) {
 
   fun showData(readingEntry: ReadingEntry,
-      onItemLongTapped: (ReadingEntry) -> Unit) = with(itemView) {
-    entryNotes.text = readingEntry.comment
-    dateOfEntry.text = formatDateToText(readingEntry.dateOfEntry)
+      onItemLongTapped: (ReadingEntry) -> Unit) {
+    binding.entryNotes.text = readingEntry.comment
+    binding.dateOfEntry.text = formatDateToText(readingEntry.dateOfEntry)
 
-    setOnLongClickListener {
+    binding.root.setOnLongClickListener {
       onItemLongTapped(readingEntry)
 
       true

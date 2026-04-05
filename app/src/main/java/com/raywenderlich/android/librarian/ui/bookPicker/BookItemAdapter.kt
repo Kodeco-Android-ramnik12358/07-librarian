@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.ui.bookPicker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemBookOptionBinding
 import com.raywenderlich.android.librarian.model.BookItem
 
 class BookItemAdapter : RecyclerView.Adapter<BookItemViewHolder>() {
@@ -57,9 +57,9 @@ class BookItemAdapter : RecyclerView.Adapter<BookItemViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
-    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_book_option, parent, false)
+    val binding = ItemBookOptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    return BookItemViewHolder(view)
+    return BookItemViewHolder(binding)
   }
 
   private fun selectItem(bookId: String) {

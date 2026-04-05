@@ -46,16 +46,24 @@ import com.raywenderlich.android.librarian.ui.readingList.dialog.AddReadingListD
 import com.raywenderlich.android.librarian.ui.readingListDetails.ReadingListDetailsActivity
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
 import com.raywenderlich.android.librarian.utils.toast
-import kotlinx.android.synthetic.main.fragment_reading_list.*
+import com.raywenderlich.android.librarian.databinding.FragmentReadingListBinding
 
 class ReadingListFragment : Fragment() {
 
+  private var _binding: FragmentReadingListBinding? = null
+  private val binding get() = _binding!!
   private val adapter by lazy { ReadingListAdapter(::onItemSelected, ::onItemLongTapped) }
   private val readingLists = listOf<ReadingListsWithBooks>()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.fragment_reading_list, container, false)
+    _binding = FragmentReadingListBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,8 +74,8 @@ class ReadingListFragment : Fragment() {
   }
 
   private fun initUi() {
-    readingListRecyclerView.layoutManager = LinearLayoutManager(context)
-    readingListRecyclerView.adapter = adapter
+    binding.readingListRecyclerView.layoutManager = LinearLayoutManager(context)
+    binding.readingListRecyclerView.adapter = adapter
   }
 
   // TODO load from DB
@@ -76,9 +84,9 @@ class ReadingListFragment : Fragment() {
   }
 
   private fun initListeners() {
-    pullToRefresh.isEnabled = false
+    binding.pullToRefresh.isEnabled = false
 
-    addReadingList.setOnClickListener {
+    binding.addReadingList.setOnClickListener {
       showAddReadingListDialog()
     }
   }

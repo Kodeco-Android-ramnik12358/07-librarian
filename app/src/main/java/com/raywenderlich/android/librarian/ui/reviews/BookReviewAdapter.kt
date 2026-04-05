@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.ui.reviews
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemBookReviewBinding
 import com.raywenderlich.android.librarian.model.relations.BookReview
 
 class BookReviewAdapter(
@@ -60,8 +60,8 @@ class BookReviewAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookReviewViewHolder {
-    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_book_review, parent, false)
+    val binding = ItemBookReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    return BookReviewViewHolder(view)
+    return BookReviewViewHolder(binding)
   }
 }

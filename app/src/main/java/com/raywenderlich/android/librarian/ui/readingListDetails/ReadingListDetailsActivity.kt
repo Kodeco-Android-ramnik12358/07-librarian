@@ -48,10 +48,11 @@ import com.raywenderlich.android.librarian.ui.books.BookAdapter
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
 import com.raywenderlich.android.librarian.utils.gone
 import com.raywenderlich.android.librarian.utils.visible
-import kotlinx.android.synthetic.main.activity_reading_list_details.*
+import com.raywenderlich.android.librarian.databinding.ActivityReadingListDetailsBinding
 
 class ReadingListDetailsActivity : AppCompatActivity() {
 
+  private lateinit var binding: ActivityReadingListDetailsBinding
   private val adapter by lazy { BookAdapter(::onItemLongTapped) }
   private var readingList: ReadingListsWithBooks? = null
 
@@ -68,7 +69,8 @@ class ReadingListDetailsActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_reading_list_details)
+    binding = ActivityReadingListDetailsBinding.inflate(layoutInflater)
+    setContentView(binding.root)
     initUi()
   }
 
@@ -81,21 +83,21 @@ class ReadingListDetailsActivity : AppCompatActivity() {
       finish()
       return
     }
-    addBookToList.setOnClickListener { showBookPickerDialog() }
-    pullToRefresh.setOnRefreshListener { refreshList() }
+    binding.addBookToList.setOnClickListener { showBookPickerDialog() }
+    binding.pullToRefresh.setOnRefreshListener { refreshList() }
 
-    toolbar.title = data.name
+    binding.toolbar.title = data.name
 
     if (data.books.isEmpty()) {
-      noBooksView.visible()
-      booksRecyclerView.gone()
+      binding.noBooksView.visible()
+      binding.booksRecyclerView.gone()
     } else {
-      noBooksView.gone()
-      booksRecyclerView.visible()
+      binding.noBooksView.gone()
+      binding.booksRecyclerView.visible()
     }
 
-    booksRecyclerView.layoutManager = LinearLayoutManager(this)
-    booksRecyclerView.adapter = adapter
+    binding.booksRecyclerView.layoutManager = LinearLayoutManager(this)
+    binding.booksRecyclerView.adapter = adapter
     adapter.setData(data.books)
   }
 
@@ -103,7 +105,7 @@ class ReadingListDetailsActivity : AppCompatActivity() {
     val data = readingList
 
     if (data == null) {
-      pullToRefresh.isRefreshing = false
+      binding.pullToRefresh.isRefreshing = false
       return
     }
 
@@ -111,7 +113,7 @@ class ReadingListDetailsActivity : AppCompatActivity() {
     readingList = refreshedList
 
     adapter.setData(refreshedList?.books ?: emptyList())
-    pullToRefresh.isRefreshing = false
+    binding.pullToRefresh.isRefreshing = false
   }
 
   private fun showBookPickerDialog() {

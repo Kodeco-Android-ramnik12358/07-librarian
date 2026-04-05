@@ -38,25 +38,25 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemBookReviewBinding
 import com.raywenderlich.android.librarian.model.relations.BookReview
-import kotlinx.android.synthetic.main.item_book_review.view.*
 
-class BookReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class BookReviewViewHolder(private val binding: ItemBookReviewBinding) : RecyclerView.ViewHolder(binding.root) {
 
   fun showData(bookReview: BookReview,
       onItemSelected: (BookReview) -> Unit,
-      onItemLongTapped: (BookReview) -> Unit) = with(itemView) {
+      onItemLongTapped: (BookReview) -> Unit) {
     val (review, book) = bookReview
 
-    reviewTitle.text = context.getString(R.string.review_title, book.name)
-    reviewRating.rating = review.rating.toFloat()
-    reviewNumberOfComments.text =
-        context.getString(R.string.number_of_reading_entries, review.entries.size)
-    reviewDescription.text = review.notes
-    Glide.with(this).load(review.imageUrl).into(bookImage)
+    binding.reviewTitle.text = binding.root.context.getString(R.string.review_title, book.name)
+    binding.reviewRating.rating = review.rating.toFloat()
+    binding.reviewNumberOfComments.text =
+        binding.root.context.getString(R.string.number_of_reading_entries, review.entries.size)
+    binding.reviewDescription.text = review.notes
+    Glide.with(binding.root).load(review.imageUrl).into(binding.bookImage)
 
-    setOnClickListener { onItemSelected(bookReview) }
-    setOnLongClickListener {
+    binding.root.setOnClickListener { onItemSelected(bookReview) }
+    binding.root.setOnLongClickListener {
       onItemLongTapped(bookReview)
       true
     }

@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.ui.books
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemBookBinding
 import com.raywenderlich.android.librarian.model.Book
 import com.raywenderlich.android.librarian.model.relations.BookAndGenre
 
@@ -60,8 +60,8 @@ class BookAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false)
+    val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    return BookViewHolder(view)
+    return BookViewHolder(binding)
   }
 }

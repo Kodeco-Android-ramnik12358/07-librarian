@@ -43,15 +43,23 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.BookItem
-import kotlinx.android.synthetic.main.dialog_add_book.*
+import com.raywenderlich.android.librarian.databinding.DialogAddBookBinding
 
 class BookPickerDialogFragment(private val onItemSelected: (String) -> Unit) : DialogFragment() {
 
+  private var _binding: DialogAddBookBinding? = null
+  private val binding get() = _binding!!
   private val adapter by lazy { BookItemAdapter() }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.dialog_add_book, container, false)
+    _binding = DialogAddBookBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,12 +72,12 @@ class BookPickerDialogFragment(private val onItemSelected: (String) -> Unit) : D
   private fun initUi() {
     val books = listOf<BookItem>()
 
-    bookOptionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    bookOptionsRecyclerView.adapter = adapter
+    binding.bookOptionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    binding.bookOptionsRecyclerView.adapter = adapter
 
     adapter.setData(books)
 
-    addBook.setOnClickListener {
+    binding.addBook.setOnClickListener {
       addBookToReadingList()
     }
   }

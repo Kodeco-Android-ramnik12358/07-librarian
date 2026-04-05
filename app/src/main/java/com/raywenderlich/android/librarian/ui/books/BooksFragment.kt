@@ -47,19 +47,26 @@ import com.raywenderlich.android.librarian.ui.addBook.AddBookActivity
 import com.raywenderlich.android.librarian.ui.filter.Filter
 import com.raywenderlich.android.librarian.ui.filter.FilterPickerDialogFragment
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
-import kotlinx.android.synthetic.main.fragment_books.*
-import kotlinx.android.synthetic.main.fragment_reviews.pullToRefresh
+import com.raywenderlich.android.librarian.databinding.FragmentBooksBinding
 
 private const val REQUEST_CODE_ADD_BOOK = 101
 
 class BooksFragment : Fragment() {
 
+  private var _binding: FragmentBooksBinding? = null
+  private val binding get() = _binding!!
   private val adapter by lazy { BookAdapter(::onItemLongTapped) }
   private var filter: Filter? = null
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.fragment_books, container, false)
+    _binding = FragmentBooksBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,17 +80,17 @@ class BooksFragment : Fragment() {
   }
 
   private fun initUi() {
-    pullToRefresh.setOnRefreshListener {
+    binding.pullToRefresh.setOnRefreshListener {
       loadBooks()
     }
 
-    booksRecyclerView.adapter = adapter
-    booksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    addBook.setOnClickListener {
+    binding.booksRecyclerView.adapter = adapter
+    binding.booksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    binding.addBook.setOnClickListener {
       startActivityForResult(AddBookActivity.getIntent(requireContext()), REQUEST_CODE_ADD_BOOK)
     }
 
-    filterBooks.setOnClickListener {
+    binding.filterBooks.setOnClickListener {
       val dialog = FilterPickerDialogFragment { filter ->
         this.filter = filter
 
@@ -95,12 +102,12 @@ class BooksFragment : Fragment() {
   }
 
   private fun loadBooks() {
-    pullToRefresh.isRefreshing = true
+    binding.pullToRefresh.isRefreshing = true
 
     val books = emptyList<BookAndGenre>() // TODO fetch from DB
 
     adapter.setData(books)
-    pullToRefresh.isRefreshing = false
+    binding.pullToRefresh.isRefreshing = false
   }
 
   private fun onItemLongTapped(book: Book) {

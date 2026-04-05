@@ -37,14 +37,14 @@ package com.raywenderlich.android.librarian.ui.bookPicker
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.android.librarian.model.BookItem
-import kotlinx.android.synthetic.main.item_book_option.view.*
+import com.raywenderlich.android.librarian.databinding.ItemBookOptionBinding
 
-class BookItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class BookItemViewHolder(private val binding: ItemBookOptionBinding) : RecyclerView.ViewHolder(binding.root) {
 
-  fun showData(book: BookItem, onItemSelected: (String) -> Unit) = with(itemView) {
-    bookOption.isChecked = book.isSelected
-    bookOption.text = book.name
+  fun showData(book: BookItem, onItemSelected: (String) -> Unit) {
+    binding.bookOption.isChecked = book.isSelected
+    binding.bookOption.text = book.name
 
-    setOnClickListener { onItemSelected(book.bookId) }
+    binding.root.setOnClickListener { onItemSelected(book.bookId) }
   }
 }

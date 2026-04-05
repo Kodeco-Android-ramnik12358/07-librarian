@@ -41,10 +41,11 @@ import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.ui.books.BooksFragment
 import com.raywenderlich.android.librarian.ui.readingList.ReadingListFragment
 import com.raywenderlich.android.librarian.ui.reviews.BookReviewsFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import com.raywenderlich.android.librarian.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+  private lateinit var binding: ActivityMainBinding
   private var reviewsFragment: BookReviewsFragment? = null
   private var readingListFragment: ReadingListFragment? = null
   private var booksFragment: BooksFragment? = null
@@ -53,7 +54,8 @@ class MainActivity : AppCompatActivity() {
     setTheme(R.style.AppTheme)
 
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
     initUi()
 
     if (savedInstanceState == null) {
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun initUi() {
-    bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
+    binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
       displayNextFragment(menuItem.itemId)
       true
     }

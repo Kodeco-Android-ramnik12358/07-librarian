@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.ui.bookReviewDetails.readingEntries
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemReadingEntryBinding
 import com.raywenderlich.android.librarian.model.ReadingEntry
 
 class ReadingEntryAdapter(private val onItemLongTapped: (ReadingEntry) -> Unit)
@@ -58,9 +58,8 @@ class ReadingEntryAdapter(private val onItemLongTapped: (ReadingEntry) -> Unit)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReadingEntryViewHolder {
-    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reading_entry, parent,
-        false)
+    val binding = ItemReadingEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    return ReadingEntryViewHolder(view)
+    return ReadingEntryViewHolder(binding)
   }
 }

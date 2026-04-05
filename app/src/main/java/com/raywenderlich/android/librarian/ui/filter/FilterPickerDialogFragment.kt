@@ -42,15 +42,19 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.DialogFilterBooksBinding
 import com.raywenderlich.android.librarian.model.Genre
-import kotlinx.android.synthetic.main.dialog_filter_books.*
 
 class FilterPickerDialogFragment(private val onFilterSelected: (Filter?) -> Unit)
   : DialogFragment() {
 
+  private var _binding: DialogFilterBooksBinding? = null
+  private val binding get() = _binding!!
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.dialog_filter_books, container, false)
+    _binding = DialogFilterBooksBinding.inflate(inflater, container, false)
+    return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,40 +62,45 @@ class FilterPickerDialogFragment(private val onFilterSelected: (Filter?) -> Unit
     initUi()
   }
 
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
+
   private fun initUi() {
-    filterOptions.setOnCheckedChangeListener { _, checkedId ->
+    binding.filterOptions.setOnCheckedChangeListener { _, checkedId ->
       updateOptions(checkedId)
     }
 
     // TODO fetch genres from DB
-    genrePicker.adapter = ArrayAdapter(
+    binding.genrePicker.adapter = ArrayAdapter(
         requireContext(),
         android.R.layout.simple_spinner_dropdown_item,
         listOf<Genre>().map { it.name }
     )
 
-    selectFilter.setOnClickListener { filterBooks() }
+    binding.selectFilter.setOnClickListener { filterBooks() }
   }
 
   // TODO fetch genres from DB
   private fun filterBooks() {
     val selectedGenre = listOf<Genre>().firstOrNull { genre ->
-      genre.name == genrePicker.selectedItem
+      genre.name == binding.genrePicker.selectedItem
     }?.id
 
-    val rating = ratingPicker.rating.toInt()
+    val rating = binding.ratingPicker.rating.toInt()
 
-    if (selectedGenre == null && filterOptions.checkedRadioButtonId == R.id.byGenreFilter) {
+    if (selectedGenre == null && binding.filterOptions.checkedRadioButtonId == R.id.byGenreFilter) {
       return
     }
 
-    if ((rating < 1 || rating > 5) && filterOptions.checkedRadioButtonId == R.id.byRatingFilter) {
+    if ((rating < 1 || rating > 5) && binding.filterOptions.checkedRadioButtonId == R.id.byRatingFilter) {
       return
     }
 
-    val filter = when (filterOptions.checkedRadioButtonId) {
+    val filter = when (binding.filterOptions.checkedRadioButtonId) {
       R.id.byGenreFilter -> ByGenre(selectedGenre ?: "")
-      R.id.byRatingFilter -> ByRating(ratingPicker.rating.toInt())
+      R.id.byRatingFilter -> ByRating(binding.ratingPicker.rating.toInt())
       else -> null
     }
 
@@ -100,13 +109,13 @@ class FilterPickerDialogFragment(private val onFilterSelected: (Filter?) -> Unit
   }
 
   private fun updateOptions(checkedId: Int) {
-    if (checkedId == noFilter.id) {
-      genrePicker.visibility = View.GONE
-      ratingPicker.visibility = View.GONE
+    if (checkedId == binding.noFilter.id) {
+      binding.genrePicker.visibility = View.GONE
+      binding.ratingPicker.visibility = View.GONE
     }
 
-    genrePicker.visibility = if (checkedId == byGenreFilter.id) View.VISIBLE else View.GONE
-    ratingPicker.visibility = if (checkedId == byRatingFilter.id) View.VISIBLE else View.GONE
+    binding.genrePicker.visibility = if (checkedId == binding.byGenreFilter.id) View.VISIBLE else View.GONE
+    binding.ratingPicker.visibility = if (checkedId == binding.byRatingFilter.id) View.VISIBLE else View.GONE
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -37,7 +37,7 @@ package com.raywenderlich.android.librarian.ui.readingList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.android.librarian.R
+import com.raywenderlich.android.librarian.databinding.ItemReadingListBinding
 import com.raywenderlich.android.librarian.model.relations.ReadingListsWithBooks
 
 class ReadingListAdapter(
@@ -60,9 +60,8 @@ class ReadingListAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReadingListViewHolder {
-    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reading_list, parent,
-        false)
+    val binding = ItemReadingListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    return ReadingListViewHolder(view)
+    return ReadingListViewHolder(binding)
   }
 }
