@@ -106,10 +106,10 @@ class BookReviewDetailsActivity : AppCompatActivity() {
     binding.reviewTitle.text = data.book.name
     binding.reviewRating.rating = data.review.rating.toFloat()
     binding.reviewDescription.text = data.review.notes
-    binding.lastUpdated.text = formatDateToText(data.review.lastUpdatedDate)
+//    binding.lastUpdated.text = formatDateToText(data.review.lastUpdatedDate)
     binding.bookGenre.text = genre.name
 
-    adapter.setData(data.review.entries)
+//    adapter.setData(data.review.entries)
   }
 
   private fun refreshData(id: String) {
@@ -133,8 +133,8 @@ class BookReviewDetailsActivity : AppCompatActivity() {
   private fun addNewEntry(readingEntry: ReadingEntry) {
     val data = bookReview?.review ?: return
 
-    val updatedReview = data.copy(entries = data.entries + readingEntry,
-        lastUpdatedDate = Date())
+//    val updatedReview = data.copy(entries = data.entries + readingEntry,
+//        lastUpdatedDate = Date())
 
     // TODO update review
     toast("Entry added!")
@@ -146,10 +146,10 @@ class BookReviewDetailsActivity : AppCompatActivity() {
     val data = bookReview ?: return
     val currentReview = data.review
 
-    val newReview = currentReview.copy(
-        entries = currentReview.entries - readingEntry,
-        lastUpdatedDate = Date()
-    )
+//    val newReview = currentReview.copy(
+//        entries = currentReview.entries - readingEntry,
+//        lastUpdatedDate = Date()
+//    )
     // TODO update review
 
     loadData()

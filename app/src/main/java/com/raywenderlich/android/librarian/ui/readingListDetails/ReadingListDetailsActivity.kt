@@ -133,7 +133,7 @@ class ReadingListDetailsActivity : AppCompatActivity() {
       val newReadingList = ReadingList(
           data.id,
           data.name,
-          bookIds
+//          bookIds
       )
       // TODO update reading list
 
@@ -150,7 +150,7 @@ class ReadingListDetailsActivity : AppCompatActivity() {
       val newReadingList = ReadingList(
           data.id,
           data.name,
-          bookIds
+//          bookIds
       )
 
       // TODO update reading list

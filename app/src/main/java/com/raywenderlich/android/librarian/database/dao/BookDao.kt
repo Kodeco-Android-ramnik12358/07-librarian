@@ -1,6 +1,7 @@
 package com.raywenderlich.android.librarian.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,4 +15,7 @@ interface BookDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addBook(book: Book)
+
+    @Delete
+    fun removeBook(book: Book)
 }

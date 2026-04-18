@@ -50,8 +50,8 @@ class BookReviewViewHolder(private val binding: ItemBookReviewBinding) : Recycle
 
     binding.reviewTitle.text = binding.root.context.getString(R.string.review_title, book.name)
     binding.reviewRating.rating = review.rating.toFloat()
-    binding.reviewNumberOfComments.text =
-        binding.root.context.getString(R.string.number_of_reading_entries, review.entries.size)
+//    binding.reviewNumberOfComments.text =
+//        binding.root.context.getString(R.string.number_of_reading_entries, review.entries.size)
     binding.reviewDescription.text = review.notes
     Glide.with(binding.root).load(review.imageUrl).into(binding.bookImage)
 

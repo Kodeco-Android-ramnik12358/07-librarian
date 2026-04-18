@@ -40,6 +40,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import com.raywenderlich.android.librarian.App
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.ReadingList
 import com.raywenderlich.android.librarian.databinding.DialogAddReadingListBinding
@@ -48,6 +49,8 @@ class AddReadingListDialogFragment(private val onListAdded: () -> Unit) : Dialog
 
   private var _binding: DialogAddReadingListBinding? = null
   private val binding get() = _binding!!
+
+  private val repository by lazy { App.repository }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -81,9 +84,9 @@ class AddReadingListDialogFragment(private val onListAdded: () -> Unit) : Dialog
     val readingListName = binding.readingListNameInput.text.toString()
 
     if (readingListName.isNotBlank()) {
-      val readingList = ReadingList(name = readingListName, bookIds = emptyList())
-      // TODO add reading list
+      val readingList = ReadingList(name = readingListName)
 
+      repository.addReadingList(readingList)
       onListAdded()
       dismissAllowingStateLoss()
     }
