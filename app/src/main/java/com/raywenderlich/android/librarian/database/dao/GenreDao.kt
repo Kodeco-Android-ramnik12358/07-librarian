@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.raywenderlich.android.librarian.model.Genre
+import com.raywenderlich.android.librarian.model.relations.BooksByGenre
 
 @Dao
 interface GenreDao {
@@ -17,4 +19,12 @@ interface GenreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addGenre(genre: Genre)
+
+    @Transaction
+    @Query("SELECT * FROM genres WHERE id = :genreId")
+    fun getBooksByGenre(genreId: String): BooksByGenre
+
+    @Transaction
+    @Query("SELECT * FROM genres")
+    fun getBooksByGenres(): List<BooksByGenre>
 }

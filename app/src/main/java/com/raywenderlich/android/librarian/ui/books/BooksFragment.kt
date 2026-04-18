@@ -49,6 +49,7 @@ import com.raywenderlich.android.librarian.ui.filter.Filter
 import com.raywenderlich.android.librarian.ui.filter.FilterPickerDialogFragment
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
 import com.raywenderlich.android.librarian.databinding.FragmentBooksBinding
+import com.raywenderlich.android.librarian.ui.filter.ByGenre
 
 private const val REQUEST_CODE_ADD_BOOK = 101
 
@@ -106,7 +107,10 @@ class BooksFragment : Fragment() {
   private fun loadBooks() {
     binding.pullToRefresh.isRefreshing = true
 
-    val books = repository.getBooks()
+    val books = when (val currentFilter = filter) {
+      is ByGenre -> repository.getBooksByGenre(currentFilter.genreId)
+      else -> repository.getBooks()
+    }
 
     adapter.setData(books)
     binding.pullToRefresh.isRefreshing = false

@@ -47,4 +47,8 @@ interface LibrarianRepository {
 
     fun removeReadingList(readingList: ReadingList)
     // endregion
+
+    // region Relationships
+    fun getBooksByGenre(genreId: String): List<BookAndGenre>
+    // endregion
 }

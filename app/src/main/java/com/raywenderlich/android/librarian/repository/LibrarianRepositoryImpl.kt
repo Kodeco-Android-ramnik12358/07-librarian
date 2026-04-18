@@ -95,4 +95,14 @@ class LibrarianRepositoryImpl(
         readingListDao.removeReadingList(readingList)
     }
     // endregion
+
+    // region Relationships
+    override fun getBooksByGenre(genreId: String): List<BookAndGenre> {
+        genreDao.getBooksByGenre(genreId).let { booksByGenre ->
+            val books = booksByGenre.books ?: return emptyList()
+
+            return books.map { BookAndGenre(it, booksByGenre.genre) }
+        }
+    }
+    // endregion
 }
