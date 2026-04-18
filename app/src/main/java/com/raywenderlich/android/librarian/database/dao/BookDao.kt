@@ -13,6 +13,9 @@ interface BookDao {
     @Query("SELECT * FROM books")
     fun getBooks(): List<Book>
 
+    @Query("SELECT * FROM books WHERE id = :id")
+    fun getBookById(id: String): Book
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addBook(book: Book)
 

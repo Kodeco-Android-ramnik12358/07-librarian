@@ -40,6 +40,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.raywenderlich.android.librarian.App
 import com.raywenderlich.android.librarian.R
 import com.raywenderlich.android.librarian.model.relations.ReadingListsWithBooks
 import com.raywenderlich.android.librarian.ui.readingList.dialog.AddReadingListDialogFragment
@@ -47,13 +48,15 @@ import com.raywenderlich.android.librarian.ui.readingListDetails.ReadingListDeta
 import com.raywenderlich.android.librarian.utils.createAndShowDialog
 import com.raywenderlich.android.librarian.utils.toast
 import com.raywenderlich.android.librarian.databinding.FragmentReadingListBinding
+import com.raywenderlich.android.librarian.model.ReadingList
 
 class ReadingListFragment : Fragment() {
 
   private var _binding: FragmentReadingListBinding? = null
   private val binding get() = _binding!!
   private val adapter by lazy { ReadingListAdapter(::onItemSelected, ::onItemLongTapped) }
-  private val readingLists = listOf<ReadingListsWithBooks>()
+
+  private val repository by lazy { App.repository }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -78,17 +81,17 @@ class ReadingListFragment : Fragment() {
     binding.readingListRecyclerView.adapter = adapter
   }
 
-  // TODO load from DB
   private fun loadReadingLists() {
-    adapter.setData(readingLists)
+    adapter.setData(repository.getReadingLists())
+    binding.pullToRefresh.isRefreshing = false
   }
 
   private fun initListeners() {
-    binding.pullToRefresh.isEnabled = false
-
     binding.addReadingList.setOnClickListener {
       showAddReadingListDialog()
     }
+
+    binding.pullToRefresh.setOnRefreshListener { loadReadingLists() }
   }
 
   private fun showAddReadingListDialog() {
@@ -110,7 +113,8 @@ class ReadingListFragment : Fragment() {
   }
 
   private fun removeReadingList(readingList: ReadingListsWithBooks) {
-    // TODO remove reading list
+    repository.removeReadingList(ReadingList(readingList.id, readingList.name))
+    loadReadingLists()
   }
 
   private fun onItemSelected(readingList: ReadingListsWithBooks) {
