@@ -31,4 +31,8 @@ class LibrarianRepositoryImpl(
     override fun getGenreById(genreId: String): Genre {
        return genreDao.getGenreById(genreId)
     }
+
+    override fun addGenre(genre: Genre) {
+        genreDao.addGenre(genre)
+    }
 }

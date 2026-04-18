@@ -36,30 +36,69 @@ package com.raywenderlich.android.librarian
 
 import android.app.Application
 import com.raywenderlich.android.librarian.database.LibrarianDatabase
+import com.raywenderlich.android.librarian.model.Genre
 import com.raywenderlich.android.librarian.repository.LibrarianRepository
 import com.raywenderlich.android.librarian.repository.LibrarianRepositoryImpl
 
 class App : Application() {
 
-  companion object {
-    private lateinit var instance: App
+    companion object {
+        private lateinit var instance: App
 
-    private val database: LibrarianDatabase by lazy {
-      LibrarianDatabase.buildDatabase(instance)
+        private val database: LibrarianDatabase by lazy {
+            LibrarianDatabase.buildDatabase(instance)
+        }
+
+        val repository: LibrarianRepository by lazy {
+            LibrarianRepositoryImpl(
+                database.bookDao(),
+                database.genreDao(),
+                database.readingListDao(),
+                database.reviewDao()
+            )
+        }
     }
 
-    val repository: LibrarianRepository by lazy {
-      LibrarianRepositoryImpl(
-        database.bookDao(),
-        database.genreDao(),
-        database.readingListDao(),
-        database.reviewDao()
-      )
-    }
-  }
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
 
-  override fun onCreate() {
-    super.onCreate()
-    instance = this
-  }
+        prepopulateDatabase()
+    }
+
+    private fun prepopulateDatabase() {
+        if (!repository.getGenres().isEmpty()) {
+            return
+        }
+
+        val genre1 = Genre(name = "Action")
+        val genre2 = Genre(name = "Adventure")
+        val genre3 = Genre(name = "Classic")
+        val genre4 = Genre(name = "Mystery")
+        val genre5 = Genre(name = "Fantasy")
+        val genre6 = Genre(name = "Sci-Fi")
+        val genre7 = Genre(name = "History")
+        val genre8 = Genre(name = "Horror")
+        val genre9 = Genre(name = "Romance")
+        val genre10 = Genre(name = "Short Story")
+        val genre11 = Genre(name = "Biography")
+        val genre12 = Genre(name = "Poetry")
+        val genre13 = Genre(name = "Self-Help")
+        val genre14 = Genre(name = "Young novel")
+
+        repository.addGenre(genre1)
+        repository.addGenre(genre2)
+        repository.addGenre(genre3)
+        repository.addGenre(genre4)
+        repository.addGenre(genre5)
+        repository.addGenre(genre6)
+        repository.addGenre(genre7)
+        repository.addGenre(genre8)
+        repository.addGenre(genre9)
+        repository.addGenre(genre10)
+        repository.addGenre(genre11)
+        repository.addGenre(genre12)
+        repository.addGenre(genre13)
+        repository.addGenre(genre14)
+    }
 }
