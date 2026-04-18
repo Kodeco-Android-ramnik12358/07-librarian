@@ -6,12 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.raywenderlich.android.librarian.model.Book
+import com.raywenderlich.android.librarian.model.relations.BookAndGenre
 
 @Dao
 interface BookDao {
 
     @Query("SELECT * FROM books")
-    fun getBooks(): List<Book>
+    fun getBooks(): List<BookAndGenre>
 
     @Query("SELECT * FROM books WHERE id = :id")
     fun getBookById(id: String): Book

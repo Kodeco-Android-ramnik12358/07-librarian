@@ -20,9 +20,7 @@ class LibrarianRepositoryImpl(
 ) : LibrarianRepository {
     // region Books
     override fun getBooks(): List<BookAndGenre> {
-        return bookDao.getBooks().map {
-            BookAndGenre(it, genreDao.getGenreById(it.genreId))
-        }
+        return bookDao.getBooks()
     }
 
     override fun getBookById(id: String): Book {
