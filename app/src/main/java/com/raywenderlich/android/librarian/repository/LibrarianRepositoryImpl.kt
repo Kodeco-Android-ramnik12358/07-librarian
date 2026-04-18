@@ -52,17 +52,11 @@ class LibrarianRepositoryImpl(
 
     // region Reviews
     override fun getReviews(): List<BookReview> {
-        val reviews = reviewDao.getReviews()
-        val bookReviews = reviews.map { BookReview(it, bookDao.getBookById(it.bookId)) }
-
-        return bookReviews
+        return reviewDao.getReviews()
     }
 
     override fun getReviewById(id: String): BookReview {
-        val review = reviewDao.getReviewById(id)
-        val bookReview = BookReview(review, bookDao.getBookById(review.bookId))
-
-        return bookReview
+        return reviewDao.getReviewById(id)
     }
 
     override fun addReview(review: Review) {
@@ -102,6 +96,14 @@ class LibrarianRepositoryImpl(
             val books = booksByGenre.books ?: return emptyList()
 
             return books.map { BookAndGenre(it, booksByGenre.genre) }
+        }
+    }
+
+    override fun getBooksByRating(rating: Int): List<BookAndGenre> {
+        val reviewsByRating = reviewDao.getReviewsByRating(rating)
+
+        return reviewsByRating.map {
+            BookAndGenre(it.book, genreDao.getGenreById(it.book.genreId))
         }
     }
     // endregion
